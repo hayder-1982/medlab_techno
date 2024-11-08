@@ -6,11 +6,7 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        {% if blog.media %}
-            <div class="col col-sm-10 col-md-8 col-lg-7">
-                <img id="media" src="{{ blog.media.url }}" class="img-fluid rounded mb-3" alt="{{ blog.title }} Media">
-            </div>
-        {% endif %}
+
         <div class="col-lg-8">
             <p class="small">
                 <i class="fas fa-thumbs-up fa-xs"></i> <span id="likes-count">{{ blog.likemodel_set.count }}</span>
@@ -23,69 +19,200 @@
                     <button class="btn btn-primary mb-3 mr-1" id="like-button" data-blog-id="{{ blog.id }}">
                         <i class="fas fa-thumbs-up fa-xs"></i>
                     </button>
-        
                     {% if user == blog.author %}
                         <a href="{% url 'blog_update' blog.pk %}" class="btn btn-secondary mb-3 mr-1">
                             <i class="fas fa-edit fa-xs"></i>
                         </a>
+                        
                         <a href="{% url 'blog_delete' blog.pk %}" class="btn btn-danger mb-3 mr-1">
                             <i class="fas fa-trash fa-xs"></i>
                         </a>
+                    
                     {% endif %}
                 </div>
             {% endif %}
                 
             <div>
-                <h2 class="mb-2">{{ blog.title }}</h2>
-                <div class="px-2 mb-3">
-                    <p class="text-muted small fst-italic mb-0">
-                        {% if user == blog.author %}
-                            You
-                        {% else %}
-                            {{ blog.author.get_full_name|default:blog.author.username }}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2 class="mb-2">{{ blog.name }}</h2>
+                        <div class="px-2 mb-3">
+                            <p class="text-muted small fst-italic mb-0">{{ blog.sex }}</p>
+                            <p class="text-muted small fst-italic mb-0">{{ blog.age}}-{{blog.uage}}</p>
+                            <p class="text-muted small fst-italic mb-0">{{ blog.created_at }}</p>
+                            <p class="text-muted small fst-italic mb-0">Id barcode :{{ blog.idBarcode }}</p>
+                            <p class="text-muted small fst-italic mb-0">
+                                {% if user == blog.author %}
+                                create By: You
+                                {% else %}
+                                create By:  {{ blog.author.get_full_name|default:blog.author.username }}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        {% if blog.imgBarcode and blog.resultmodel_set.all %}
+                        <div class="col col-sm-10 col-md-8 col-lg-7">
+                            <!--
+                            <img id="imgBarcode" src="{{ blog.imgBarcode.url }}" class="img-fluid rounded mb-3" alt="{{ blog.name }} imgBarcode">
+                            -->
+                                        <!-- Display the image -->
+                            <img src="{{ blog.imgBarcode.url }}" alt="My Image" id="image-to-print" width="100">
+                            <!-- Print button -->
+                            <button id="print-btn" onclick="printOnlyImage()">Print Image</button>
+                        </div>
                         {% endif %}
-                    </p>
-                    <p class="text-muted small fst-italic">{{ blog.created_at }}</p>
+                    </div>
                 </div>
-                <p class="mb-3">{{ blog.content|linebreaks }}</p>
+                <!-- 
+                <p class="mb-3">{{ blog.age|linebreaks }}</p>
+                -->
             </div>
         </div>
     </div>
 
+
     <!-- Comments -->
+    {% comment %} 
     <div class="comment-section mb-4">
-        <h3 class="mb-2">Comments</h3>
+        <h3 class="mb-2">Test patient</h3>
         {% for comment in blog.commentmodel_set.all %}
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">
-                        {% if user == comment.user %}
-                            You
-                        {% else %}
-                            {{ comment.user.get_full_name|default:comment.user.username }}
-                        {% endif %}
-                    </h5>
                     <p class="card-text">{{ comment.text }}</p>
-                    <p class="card-text">
+                    <p class="text-muted small fst-italic mb-0">
                         <small class="text-muted">{{ comment.created_at }}</small>
+                    </p>
+                    <p class="text-muted small fst-italic mb-0">
+                        {% if user == comment.user %}
+                            Create By :You
+                        {% else %}
+                            Create By : {{ comment.user.get_full_name|default:comment.user.username }}
+                        {% endif %}
                     </p>
                 </div>
             </div>
         {% empty %}
-            <p id="no-comment">No comments yet.</p>
+            <p id="no-comment">No Test yet.</p>
+        {% endfor %}
+    </div> 
+    {% endcomment %}
+
+    <!-- Test requierd -->
+    <div class="result-section mb-4">
+        <h3 class="mb-2">Test patient</h3>
+        {% for testRq in blog.resultmodel_set.all %}
+        {% if testRq.test.testSingle %}
+        <!--  group test   -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p class="card-text mb-0"> {{ testRq.test }}
+                            </p>
+                            <p class="text-muted small fst-italic mb-0">Unit:{{ testRq.test.unit|default_if_none:"&nbsp;"|safe  }}
+                            &nbsp;&nbsp;&nbsp; Category:{{ testRq.test.category|default_if_none:"&nbsp;"|safe  }}&nbsp;&nbsp;&nbsp; Sample:{{ testRq.test.sample|default_if_none:"&nbsp;"|safe  }}
+                            &nbsp;&nbsp;&nbsp; Price:{{ testRq.test.price|default_if_none:"&nbsp;"|safe  }} IQ</p>
+                            <p class="text-muted small fst-italic mb-0"> <small class="text-muted">{{ testRq.date }}&nbsp;&nbsp;&nbsp;
+                            
+                            {% if user == testRq.user %}
+                                Create By :You
+                                &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                                result By : {{ testRq.autherresult|default_if_none:"&nbsp;"|safe  }}
+                            {% else %}
+                                Create By : {{ testRq.user.get_full_name|default:testRq.user.username }}
+                                &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                                result By : {{ testRq.autherresult|default_if_none:"&nbsp;"|safe  }}
+                            {% endif %}
+                            </small> </p>
+                        </div>
+                        <div class="col-sm-6">
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'generate_pdfcbc' blog.idBarcode %}" class="btn btn-primary mb-3 mr-1"><i class="fas fa-print"></i></a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="{% url 'cbc' testRq.blog_id %}" class="btn btn-secondary mb-3 mr-1"> <i class="fas fa-edit fa-xs"></i> </a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="{% url 'test_delete' testRq.pk %}" class="btn btn-danger mb-3 mr-1"> <i class="fas fa-trash fa-xs"></i> </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p class="card-text mb-0"> {{ testRq.test }}
+                            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                            Result:{{ testRq.result|default_if_none:"Prepare test"|safe }}
+                            </p>
+                            <p class="text-muted small fst-italic mb-0">Unit:{{ testRq.test.unit|default_if_none:"&nbsp;"|safe  }}
+                            &nbsp;&nbsp;&nbsp; Category:{{ testRq.test.category|default_if_none:"&nbsp;"|safe  }}&nbsp;&nbsp;&nbsp; Sample:{{ testRq.test.sample|default_if_none:"&nbsp;"|safe  }}
+                            &nbsp;&nbsp;&nbsp; Price:{{ testRq.test.price|default_if_none:"&nbsp;"|safe  }} IQ</p>
+                            <p class="text-muted small fst-italic mb-0"> <small class="text-muted">{{ testRq.date }}&nbsp;&nbsp;&nbsp;
+                            
+                            {% if user == testRq.user %}
+                                Create By :You
+                                &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                                result By : {{ testRq.autherresult|default_if_none:"&nbsp;"|safe  }}
+                            {% else %}
+                                Create By : {{ testRq.user.get_full_name|default:testRq.user.username }}
+                                &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                                result By : {{ testRq.autherresult|default_if_none:"&nbsp;"|safe  }}
+                            {% endif %}
+                            </small> </p>
+                        </div>
+                        <div class="col-sm-6">
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'generate_pdfresult' blog.idBarcode %}" class="btn btn-primary mb-3 mr-1"> <i class="fas fa-print"></i> </a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="{% url 'test_update' testRq.pk %}" class="btn btn-secondary mb-3 mr-1"> <i class="fas fa-edit fa-xs"></i> </a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="{% url 'test_delete' testRq.pk %}" class="btn btn-danger mb-3 mr-1"> <i class="fas fa-trash fa-xs"></i> </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+        {% empty %}
+            <p id="no-comment">No Test yet.</p>
         {% endfor %}
     </div>
 
+    
+#create Test
     <div class="row">
         <div class="col col-md-10 col-lg-8 col-xl-6">
-            <form id="comment-form" class="card card-body" method="POST">
+            <form id="result-form" class="card card-body" method="POST">
                 {% csrf_token %}
-                <label class="mb-2 h4" for="comment-text"><i class="far fa-comment"></i> Comment</label>
-                <input id="comment-text" type="text" class="form-control mb-2" name="form" placeholder="Comment here...">
+                <label class="mb-2 h4" for="result-text"><i class="far fa-comment"></i> Add Test</label>
+                <!--  <input id="result-text" type="text" class="form-control mb-2" name="form" placeholder="Comment here...">  -->
+                <select id="result-text" class="form-control mb-2" type="text"  name="form" aria-label="Default select example">
+                    {% for i in tests %}
+                    <option value="{{i.id}}">{{i.apprvname }}</option>
+                    {% endfor %}
+                </select>
                 <button type="submit" class="btn btn-primary mb-4">Submit</button>
             </form>
         </div>
     </div>
+    
+    {% comment %} 
+    <div class="row">
+        <div class="col col-md-10 col-lg-8 col-xl-6">
+            <form id="comment-form" class="card card-body" method="POST">
+                {% csrf_token %}
+                <label class="mb-2 h4" for="comment-text"><i class="far fa-comment"></i> Add Test</label>
+                <input id="comment-text" type="text" class="form-control mb-2" name="form" placeholder="Comment here...">
+                <button type="submit" class="btn btn-primary mb-4">Submit</button>
+            </form>
+        </div>
+    </div> 
+    {% endcomment %}
+
 </div>
 {% endblock %}
 
@@ -126,6 +253,55 @@
                 document.getElementById('likes-count').innerText = data.likes_count;
             })
             .catch();
+        });
+    });
+
+        // result Script
+    const resultForm = document.getElementById('result-form');
+    const resultText = document.getElementById('result-text');
+    const noresult = document.getElementById('no-result');
+
+    resultForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const test = resultText.value;
+        const blogId = "{{ blog.id }}"; // Replace with the actual blog ID
+
+        fetch(`/api/blog/${blogId}/result/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify({ test }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'Comment created successfully') {
+                // Clear the comment input and remove error message
+                //resultText.value = '';
+                if (noresult) noresult.style.display = 'none';
+                
+                // Create and append the new comment to the comments section
+                const resultSection = document.querySelector('.result-section');
+                const newresult = document.createElement('div');
+                newresult.classList.add('card', 'mb-3');
+                newresult.innerHTML = `
+                    <div class="card-body">
+                        {% comment %} <p class="card-text">${test}</p> {% endcomment %}
+                        <p class="card-text">Creat new test</p> 
+                        <p class="text-muted small fst-italic mb-0">
+                            created by : You
+                        </p>
+                    </div>
+                `;
+                resultSection.appendChild(newresult);
+            } else {
+                // Handle errors (e.g., display an error message)
+                alert('Failed to create a comment. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
     });
 
@@ -183,3 +359,25 @@
 </script>
 {% endblock extra_script %}
     
+{% comment %} 
+
+    function printOnlyImage() {
+            // Get the image source
+            var imgSrc = document.getElementById("image-to-print").src;
+
+            // Open a new window
+            var newWindow = window.open('', '_blank');
+            
+            // Write the image HTML to the new window
+            newWindow.document.write('<html><head><title>Print Image</title>');
+            newWindow.document.write('<style>body{text-align:center; margin-top:10px;}</style>');
+            newWindow.document.write('</head><body>');
+            newWindow.document.write('<img src="' + imgSrc + '" style="max-width:120%; height:100%;">');
+            newWindow.document.write('</body></html>');
+
+            // Trigger the print dialog
+            newWindow.document.close();  // Close the document
+            newWindow.focus();            // Focus on the new window
+            newWindow.print();            // Trigger the print dialog
+            newWindow.close();            // Close the new window after printing
+        } {% endcomment %}

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         {% if title %}
-            Django Blog | {{ title }}
+            Techno Lab| {{ title }}
         {% else %}
-            Django Blog
+            Techno Lab
         {% endif %}
     </title>
 
@@ -38,7 +39,7 @@
 <body>
     <nav class="navbar navbar-expand-md bg-poly-green mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand link-light" href="{% url 'home' %}">Django Blog</a>
+            <a class="navbar-brand link-light" href="{% url 'home' %}"> Techno Lab</a>
             {% if user.is_authenticated %}
                 <!-- Welcome message for xs to sm devices -->
                 <span class="navbar-text text-light d-md-none">
@@ -55,7 +56,7 @@
                     </li>
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link link-light" href="{% url 'post' %}"><i class="fas fa-edit"></i> Post</a>
+                            <a class="nav-link link-light" href="{% url 'post' %}"><i class="fas fa-edit"></i> add patient</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link link-light" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>

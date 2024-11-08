@@ -1,0 +1,80 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <form method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">WBC</label>
+                <input class="form-control" type="text" id="inputGroupFile01" name="WBC" value={{cbc.WBC|default_if_none:"&nbsp;"|safe}} >
+            </div>
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">GRN</label>
+                <input class="form-control" type="text" name="GRN" value={{cbc.GRN|default_if_none:"&nbsp;"|safe}} >
+            </div>
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">LYM</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="LYM" value={{cbc.LYM|default_if_none:"&nbsp;"|safe}} >
+            </div>
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">MID</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="MID" value={{cbc.MID|default_if_none:"&nbsp;"|safe}} >
+            </div>
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">GRN%</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="GRN_per" value={{cbc.GRN_per|default_if_none:"&nbsp;"|safe}}>
+            </div>
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">LYM%</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="LYM_per" value={{cbc.LYM_per|default_if_none:"&nbsp;"|safe}}>
+            </div>
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">MID%</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="MID_per" value={{cbc.MID_per|default_if_none:"&nbsp;"|safe}}>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">RBC</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="RBC" value={{cbc.RBC|default_if_none:"&nbsp;"|safe}}>
+            </div>
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">HGB</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="HGB" value={{cbc.HGB|default_if_none:"&nbsp;"|safe}}>
+            </div>
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">HCT</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="HCT" value={{cbc.HCT|default_if_none:"&nbsp;"|safe}}>
+            </div>
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">MCV</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="MCV" value={{cbc.MCV|default_if_none:"&nbsp;"|safe}}>
+            </div>
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">MCH</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="MCH" value={{cbc.MCH|default_if_none:"&nbsp;"|safe}}>
+            </div>
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">MCHC</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="MCHC" value={{cbc.MCHC|default_if_none:"&nbsp;"|safe}}>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">PLT</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="PLT" value={{cbc.PLT|default_if_none:"&nbsp;"|safe}}>
+            </div>
+            <div class="input-group mb-1">
+                <label class="input-group-text" for="inputGroupFile01">MPV</label>
+                <input class="form-control" type="text" id="inputGroupFile01" type="text" name="MPV" value={{cbc.MPV|default_if_none:"&nbsp;"|safe}}>
+            </div>
+        </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary mb-4">Submit</button>
+    </form>
+</div>
+{% endblock %}

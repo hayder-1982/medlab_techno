@@ -11,29 +11,43 @@
         <button type="button" class="btn btn-outline-primary sort-btn" data-sort="views">Views</button>
         <button type="button" class="btn btn-outline-primary sort-btn" data-sort="likes">Likes</button>
     </div>
-
+        
     <!-- Blog List -->
     <div class="list-group">
         {% for blog in blogs %}
-            <div class="list-group-item list-group-item-action">
-                <h4 class="mb-2"><a href="{% url 'blog_detail' blog.pk %}">{{ blog.title }}</a></h4>
+        <div class="row">
+            <div class="col-sm">
+            <div class="list-group-item list-group-item-action ">
+                <h4 class="mb-2"><a href="{% url 'blog_detail' blog.pk %}">{{ blog.name }}</a></h4>
+                <p class="text-muted small fst-italic mb-0"> Age:{{ blog.age|truncatechars:100 }}-{{ blog.uage|truncatechars:100 }}</p>
+                <p class="text-muted small fst-italic mb-0">Id barcode :{{ blog.idBarcode }}</p>
+                <p class="text-muted small fst-italic mb-0">{{ blog.created_at|date:"F d, Y" }}</p>
                 <p class="text-muted small fst-italic mb-0">
                     {% if user == blog.author %}
-                        You
+                        Create By: You
                     {% else %}
-                        {{ blog.author.get_full_name|default:blog.author.username }}
+                        Create By:{{ blog.author.get_full_name|default:blog.author.username }}
                     {% endif %}
                 </p>
-                <p class="text-muted small fst-italic mb-0">{{ blog.created_at|date:"F d, Y" }}</p>
                 <p class="small">
                     <i class="fas fa-thumbs-up fa-xs"></i> {{ blog.likemodel_set.count }}
                     &nbsp;
                     <i class="fas fa-eye fa-xs"></i> {{ blog.views }}
                 </p>
-                <p class="mb-1">{{ blog.content|truncatechars:100 }}</p>
             </div>
+            </div>
+            <div class="col-sm">
+                <div class="list-group-item list-group-item-action ">
+                total test requiset= {{ blog.resultmodel_set.all.count}}
+                    {% for i in  blog.resultmodel_set.all %}
+                        <p class="text-muted small fst-italic mb-0"> <strong>{{ i.test }}</strong> ---- {{ i.result|default_if_none:"preparing test...;"|safe }} &nbsp;&nbsp;&nbsp;---  {{ i.date }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            </div>
+            <hr>
         {% empty %}
-            <div class="list-group-item">No blogs found.</div>
+            <div class="list-group-item">No patient found.</div>
         {% endfor %}
     </div>
 

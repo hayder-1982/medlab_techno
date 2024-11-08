@@ -1,0 +1,299 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+  <!--
+    <link href="{% static '../css/invoice.css' %}" media="print" rel="stylesheet">
+  -->
+    <title>Invoice</title>
+    <meta name="description" content="Invoice demo sample">
+
+  </head>
+
+  <body>
+    <h1>Invoice</h1>
+  
+    <aside>
+      <address id="from">
+        name patient :{{pt.name}}
+        gander: {{pt.sex}}
+        age :{{pt.age}}-{{pt.uage}} 
+        Date: {{ pt.created_at}}
+      </address>
+
+      <address id="to">
+        ID :{{pt.idBarcode}}
+        {% if pt.drname %}Reffer by:{{pt.drname|default_if_none:"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"|safe }} {% endif %}
+      </address>
+    </aside>
+
+    <dl id="informations">
+      <dt>Invoice number</dt>
+      <dd>12345</dd>
+      <dt>Date</dt>
+      <dd>March 31, 2018</dd>
+    </dl>
+
+    <table>
+      <thead>
+        <tr>
+          <th><p class="a">Test</p></th>
+          <th><p class="a">result</p></th>
+          <th><p class="a">unit</p></th>
+          <th><p class="a">range</p></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><p class="a">WBC</p> </td>
+          <td><p class="a">{{cbc_result.WBC}}</p></td>
+          <td><p class="a">10^9/l</p></td>
+          <td><p class="a">3.5 - 10.0</p></td>
+        </tr>
+
+        <tr>
+          <td><p class="a">GRN</p> </td>
+          <td><p class="a">{{cbc_result.GRN}}</p></td>
+          <td><p class="a">10^9/l</p></td>
+          <td><p class="a">1.2 - 8.0</p></td>
+        </tr>
+
+        <tr>
+          <td><p class="a">LYM</p> </td>
+          <td><p class="a">{{cbc_result.LYM}}</p></td>
+          <td><p class="a">10^9/l</p></td>
+          <td><p class="a">0.9 - 5.0</p></td>
+        </tr>
+
+        <tr>
+          <td><p class="a">MID</p> </td>
+          <td><p class="a">{{cbc_result.MID}}</p></td>
+          <td><p class="a">10^9/l</p></td>
+          <td><p class="a">0.1 - 1.5</p></td>
+        </tr>
+
+        <tr>
+          <td><p class="a">GRN %</p> </td>
+          <td><p class="a">{{cbc_result.GRN_per}}</p></td>
+          <td><p class="a">%</p></td>
+          <td><p class="a">35 - 80</p></td>
+        </tr>
+
+        <tr>
+          <td><p class="a">LYM %</p> </td>
+          <td><p class="a">{{cbc_result.LYM_per}}</p></td>
+          <td><p class="a">%</p></td>
+          <td><p class="a">15 - 50</p></td>
+        </tr>
+        
+        <tr>
+          <td><p class="a">MID %</p> </td>
+          <td><p class="a">{{cbc_result.MID_per}}</p></td>
+          <td><p class="a">%</p></td>
+          <td><p class="a">2 - 15</p></td>
+        </tr>
+        
+        <tr>
+          <td><p class="a">RBC</p> </td>
+          <td><p class="a">{{cbc_result.RBC}}</p></td>
+          <td><p class="a">10^12/l</p></td>
+          <td><p class="a">3.5 -.5.5</p></td>
+        </tr>
+        
+        <tr>
+          <td><p class="a">HGB</p> </td>
+          <td><p class="a">{{cbc_result.HGB}}</p></td>
+          <td><p class="a">g/dl</p></td>
+          <td><p class="a">11.5 - 16.5</p></td>
+        </tr>  
+
+        <tr>
+          <td><p class="a">HCT</p> </td>
+          <td><p class="a">{{cbc_result.HCT}}</p></td>
+          <td><p class="a">%</p></td>
+          <td><p class="a">35 - 55</p></td>
+        </tr> 
+        
+        <tr>
+          <td><p class="a">MCV</p> </td>
+          <td><p class="a">{{cbc_result.MCV}}</p></td>
+          <td><p class="a">fl</p></td>
+          <td><p class="a">75 - 100</p></td>
+        </tr> 
+
+        <tr>
+          <td><p class="a">MCH</p> </td>
+          <td><p class="a">{{cbc_result.MCH}}</p></td>
+          <td><p class="a">pg</p></td>
+          <td><p class="a">25 - 35</p></td>
+        </tr> 
+
+        <tr>
+          <td><p class="a">MCHC</p> </td>
+          <td><p class="a">{{cbc_result.MCHC}}</p></td>
+          <td><p class="a">g/dl</p></td>
+          <td><p class="a">31 - 38</p></td>
+        </tr> 
+
+        <tr>
+          <td><p class="a">PLT</p> </td>
+          <td><p class="a">{{cbc_result.PLT}}</p></td>
+          <td><p class="a">10^9/l</p></td>
+          <td><p class="a">150 - 400</p></td>
+        </tr> 
+
+        <tr>
+          <td><p class="a">MPV</p> </td>
+          <td><p class="a">{{cbc_result.MPV}}</p></td>
+          <td><p class="a">fl</p></td>
+          <td><p class="a">6.5 - 11.0</p></td>
+        </tr> 
+      </tbody>
+    </table>
+<!-- 
+    <footer>
+      <table id="total">
+        <thead>
+          <tr>
+            <th>Due by</th>
+            <th>Account number</th>
+            <th>Total due</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>May 10, 2018</td>
+            <td>132 456 789 012</td>
+            <td>€10,545.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </footer>
+    -->
+    
+  </body>
+
+
+  <style>
+  @page {
+    font-family: Pacifico;
+    margin: 3cm;
+    @bottom-left {
+      color: #1ee494;
+      content: '♥ Thank you!';
+    }
+    @bottom-right {
+      color: #a9a;
+      content: '---';
+      font-size: 9pt;
+    }
+  }
+  
+  html {
+    color: #010613;
+    font-family: Source Sans Pro;
+    font-size: 10pt;
+    line-height: 1.6;
+  }
+  body {
+    margin: 0;
+  }
+  
+  h1 {
+    color: #1ee494;
+    font-family: Pacifico;
+    font-size: 40pt;
+    margin: 0;
+  }
+  
+  aside {
+    display: flex;
+    margin: 2em 0 4em;
+  }
+  aside address {
+    font-style: normal;
+    white-space: pre-line;
+  }
+  aside address#from {
+    color: rgb(0, 0, 0);
+    flex: 1;
+  }
+  aside address#to {
+    text-align: right;
+  }
+  
+  dl {
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+  }
+  dt, dd {
+    display: inline;
+    margin: 0;
+  }
+  dt {
+    color: #a9a;
+  }
+  dt::before {
+    content: '';
+    display: block;
+  }
+  dt::after {
+    content: ':';
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th {
+    border-bottom: .2mm solid #a9a;
+    color: rgb(0, 0, 0);
+    font-size: 8pt;
+    font-weight: 400;
+    padding-bottom: .25cm;
+    text-transform: uppercase;
+  }
+  td {
+    padding-top: 2mm;
+  }
+  td:last-of-type {
+    color: #000000;
+    font-weight: bold;
+    text-align: right;
+  }
+  th, td {
+    text-align: center;
+  }
+  th:first-of-type, td:first-of-type {
+    text-align: left;
+  }
+  th:last-of-type, td:last-of-type {
+    text-align: right;
+  }
+  footer {
+    content: '';
+    display: block;
+    height: 6cm;
+  }
+  table#total {
+    background: #f6f6f6;
+    border-color: #f6f6f6;
+    border-style: solid;
+    border-width: 2cm 3cm;
+    bottom: 0;
+    font-size: 20pt;
+    margin: 0 -3cm;
+    position: absolute;
+    width: 18cm;
+  }
+  p.a{
+    font-family: "Time New Roman ", Times , serif;
+    line-height: 0.6;
+    font-size: 10pt;
+    margin: 2%;
+    padding: auto;
+  }
+  </style>
+</html>
